@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <script src="server.js"></script>
+    <script src="script.js"></script>
+    <link rel="shortcut icon" href="WINE1.JPEG" type="image/x-icon">
+    <title>TheHoffs live auction</title>
+    <h1 id="overskrift2">
+        Welcome to The Hoffs Wineinvestors auction
+    </h1>
+</head>
+<body>
+
+<hr>
+
+<table>
+  <tr>
+    <th>The auction ends in</th>
+    <th id="countDown"></th>
+  </tr>
+</table>
+<hr>
+  <p style="font-size: 200%;">
+    You are logged in as
+    <div id="userName"></div>
+
+        <table bgcolor="black" width="400" >
+          
+          <h2>Registered bids:</h2>
+<div id="bidContainer">
+          <tr bgcolor="grey" align="center">
+            <th>Username</th>
+            <th>Bid</th>
+          </tr>
+          <tr bgcolor=lightgrey align=center>
+          <td> user</td>
+          <td>money</td>
+        </tr>
+      </div>
+        </table>
+
+
+   <form action="javascript:void(0)" id="form"></form>
+    <img src="WINE1.JPEG" alt="WINE1" class="center" style="height: 350px; width: 250px; display: block; margin-left: auto; margin-right: auto" >
+    <input placeholder="moneyamount" type="number" name="message" id="message" style="display: block; margin-left: auto; margin-right: auto;">
+    <input id="input" type="submit" value="Submit bid" style="display: block; margin-left: auto; margin-right: auto;"></tr>
+  </form>
+
+    
+  <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+</body>
+
+<script>
+const countDownDate = new Date("Jan 20, 2023 23:59:59").getTime(); // Set the date we're counting down to
+  
+const x = setInterval(() => {// Update the count down every 1 second
+
+const now = new Date().getTime(); // Get today's date and time
+      
+var distanse = countDownDate - now;// Find the distance between now and the count down date
+      
+// Time calculations for days, hours, minutes and seconds
+let days = Math.floor(distanse / (1000 * 60 * 60 * 24));
+let hours = Math.floor((distanse % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+let minutes = Math.floor((distanse % (1000 * 60 * 60)) / (1000 * 60));
+let seconds = Math.floor((distanse % (1000 * 60)) / 1000);
+  
+// Output the result in an element with id="demo"
+document.getElementById("countDown").innerHTML = days + "d " + hours + "h "
++ minutes + "m " + seconds + "s ";
+  
+// If the count down is over, an alert will show
+if (distanse < 0) {
+  clearInterval(x);
+  document.getElementById("countDown").innerHTML = alert("THE AUCTION IS OVER");
+}
+  }, 500);
+  </script>
+
+<style>
+    #overskrift2 {
+        text-align: center;
+    };
+
+#brukerNavnet {
+  text-emphasis: rgb(49, 13, 13);
+}
+
+input {
+   text-align: center;
+    };
+    ::-webkit-input-placeholder {
+      text-align: center;
+    };
+    :-moz-placeholder {
+      text-align: center;
+    };
+
+  #brukerNavnet {
+font-size: 20px;
+  };
+
+</style>
+</html>

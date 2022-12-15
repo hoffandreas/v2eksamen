@@ -11,7 +11,7 @@ const PORT = 3000 || process.env.port;
 //middelware searching for every consecutive request
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
-app.use(express.static(__dirname + '/public'))
+app.use(express.static(__dirname + '../public'))
 app.use(session({ //This session receives objects, with the options; secret, resave, saveUninitialized
         secret: "Keep it secret, key that will sign cookie", // A key that will take in some string
         resave: false, // For every request to the server we want to create a new session
@@ -28,6 +28,8 @@ const db = require('knex')({ //Knex is used to interact with the database
     useNullAsDefault: true,
 });
 
+
+
 app.get("/", (req, res ) => {
     return res.sendFile("/signup.html", { root: path.join(__dirname, "../public") });
 })
@@ -39,6 +41,12 @@ app.get("/signup.html", (req, res ) => {
 app.get("/login.html", (req, res ) => {
     return res.sendFile("/login.html", { root: path.join(__dirname, "../public") });
 })
+
+app.get("/dashboard.html", (req, res ) => {
+    return res.sendFile("/dashboard.html", { root: path.join(__dirname, "../public") });
+})
+
+
 
 
 app.post('/signup', async (req, res) => {
@@ -53,7 +61,7 @@ app.post('/signup', async (req, res) => {
         The higher the generator number is the more times the password gets randomized so it becomes safer.The higher the number,the slower the funciton becomes*/
         await db('users').insert({username: username, password: hash}); //Inserting the hash and username to the 'users' dababase
     
-        return res.redirect('../public/login.html')
+        return res.redirect('../login.html')
 
     } catch(error) {
         const name = await req.body.username
@@ -78,7 +86,7 @@ app.post('/login', async (req, res) => {
         if(user) { // Here we check if the user exists in the database and check if the password is correct event though the password is hashed. The compare method helps us here to identify hashed password. We can do this because the input always gives the same output
             const validPass = await bcrypt.compare(password, user.password); 
             if(validPass) {
-                res.redirect("/dashboard.html")
+                res.redirect("../dashboard.html")
             } else {
                 res.status(400).json('You have entered wrong password!'); //If you have the wrong password
             }
@@ -90,6 +98,7 @@ app.post('/login', async (req, res) => {
         res.status(400).json('Something went wrong... Username or password is not matching!');
     }
 });
+
 
 
 app.use((err, req, res, next) => {console.error(err.stack); // Basic error handling
