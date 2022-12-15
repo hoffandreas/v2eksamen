@@ -20,6 +20,8 @@ npm install path
 
 npm install knex
 
+npm install connect-session-knex
+
 
 --- If already installed --- 
 npm update

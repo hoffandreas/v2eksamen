@@ -23,6 +23,8 @@
     <th id="countDown"></th>
   </tr>
 </table>
+
+
 <hr>
   <p style="font-size: 200%;">
     You are logged in as
@@ -50,6 +52,10 @@
     <input id="input" type="submit" value="Submit bid" style="display: block; margin-left: auto; margin-right: auto;"></tr>
   </form>
 
+  <form action="/logout" method="POST" >
+  <button>Logout</button>
+      </form>
+  
     
   <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
   <script src="/socket.io/socket.io.js"></script>
@@ -104,6 +110,8 @@ input {
   #brukerNavnet {
 font-size: 20px;
   };
+
+
 
 </style>
 </html>
