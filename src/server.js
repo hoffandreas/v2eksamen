@@ -102,15 +102,16 @@ app.post('/login', async (req, res) => {
     }
 });
 
+
 app.post("/logout",(req, res) => {
-    req.session.destroy((err) =>{
-        if(err) throw err;
+    req.session.destroy((error) =>{
+        if(error) throw error;
         res.redirect("/")
     })
 })
 
 
-app.use((err, req, res, next) => {console.error(err.stack); // Basic error handling
+app.use((error, req, res, next) => {console.error(error.stack); // Basic error handling
     res.status(500).send('!ERROR! CLOSE WEBPAGE!');
 });
 

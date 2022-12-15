@@ -1,3 +1,7 @@
 --CREATE TABLE users(username TEXT NOT NULL PRIMARY KEY, password NOT NULL)
 
 --DELETE FROM users 
+
+--DROP TABLE bid
+
+--CREATE TABLE bid (username TEXT NOT NULL PRIMARY KEY, money NOT NULL)

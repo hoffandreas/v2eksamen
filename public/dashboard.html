@@ -48,8 +48,12 @@
 
    <form action="javascript:void(0)" id="form"></form>
     <img src="WINE1.JPEG" alt="WINE1" class="center" style="height: 350px; width: 250px; display: block; margin-left: auto; margin-right: auto" >
-    <input placeholder="moneyamount" type="number" name="message" id="message" style="display: block; margin-left: auto; margin-right: auto;">
-    <input id="input" type="submit" value="Submit bid" style="display: block; margin-left: auto; margin-right: auto;"></tr>
+
+    <div class="input-field">
+      <input type="money" name="money" id="money" placeholder="moneyamount" style="display: block; margin-left: auto; margin-right: auto;" >
+  </div>
+
+    <input type="submit" value="Submit bid" style="display: block; margin-left: auto; margin-right: auto;"></tr>
   </form>
 
   <form action="/logout" method="POST" >
@@ -89,6 +93,7 @@ if (distanse < 0) {
   </script>
 
 <style>
+
     #overskrift2 {
         text-align: center;
     };
