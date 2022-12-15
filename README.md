@@ -1,6 +1,6 @@
 # v2eksamen
 
---- Libraries I install from terminal ---
+--- Libraries I have installed  from terminal ---
 
 npm init -y
 
