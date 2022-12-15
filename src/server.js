@@ -5,7 +5,7 @@ const path = require('path');
 const bodyParser = require('body-parser')
 const bcrypt = require('bcryptjs'); //bcrypt hash is an async function, very slow alorithm
 
-const PORT = 3001;
+const PORT = 3000 || process.env.port;
 
 
 //middelware searching for every consecutive request
@@ -29,7 +29,6 @@ const db = require('knex')({ //Knex is used to interact with the database
 });
 
 
-// Routes
 app.post('/signup', async (req, res) => {
     try {
         const {username, password} = req.body; //sending username and Password to endpoint /signup
@@ -42,7 +41,7 @@ app.post('/signup', async (req, res) => {
         The higher the generator number is the more times the password gets randomized so it becomes safer.The higher the number,the slower the funciton becomes*/
         await db('users').insert({username: username, password: hash}); //Inserting the hash and username to the 'users' dababase
     
-        res.status(200).json('Congratulations, you have registerd a username and password!');
+        res.status(200).json('Congratulations, you have registerd a username and password!')
     } catch(error) {
 
         if(e.errno === 19) {
@@ -80,12 +79,8 @@ app.post('/login', async (req, res) => {
 });
 
 
-
-
-
-// Error handling
-app.use((err, req, res, next) => {console.error(err.stack);
-    res.status(502).send('CLOSE WEBPAGE!');
+app.use((err, req, res, next) => {console.error(err.stack); // Basic error handling
+    res.status(500).send('!ERROR! CLOSE WEBPAGE!');
 });
 
 app.listen(PORT, () => console.log(`Have a lovely auction at our website ${PORT}`));
