@@ -38,21 +38,54 @@ app.post('/signup', async (req, res) => {
             res.status(400).json(`Missing ${!username ? "username" : 'password'}!`) //If the username and/or the password is missing, an error message will appear
         }
 
-        const hash = await bcrypt.hash(password, 13); /*This is how you can combine hash and salt function together. Nr 13 is a salt generator. The higher the generator number is the more times the password gets randomized so it becomes safer. 
-        The higher the number,the slower the funciton becomes*/
-        await db('users').insert({username: username, password: hash}); //Inserting the hash and email to the 'users' dababase
+        const hash = await bcrypt.hash(password, 13); /*This is how you can combine hash and salt function together. Nr 13 is a salt generator. 
+        The higher the generator number is the more times the password gets randomized so it becomes safer.The higher the number,the slower the funciton becomes*/
+        await db('users').insert({username: username, password: hash}); //Inserting the hash and username to the 'users' dababase
     
-        res.status(200).json('All good!');
-    } catch(e) {
-        console.log(e)
+        res.status(200).json('Congratulations, you have registerd a username and password!');
+    } catch(error) {
 
         if(e.errno === 19) {
-            res.status(400).json('Feilmelding, dette brukernavnet er allerede opptatt!');
+            res.status(400).json('Error message, This username is already been taken!');
         } else {
-            res.status(400).json('Noe gikk galt... Riktig brukernavn og passord mangler!');
+            res.status(400).json('Something went wrong... Username or password is missing!');
         }
     }
 });
 
+app.post('/login', async (req, res) => {
+    try {
+        const {username, password} = req.body; //sending username and Password to endpoint /login
 
-app.listen(PORT, () => console.log(`Ha en god auksjon på port ${PORT}`));
+        if (!username || !password) {
+            res.status(400).json(`Missing ${!username ? "username" : 'password'}!`)//If the username and/or the password is missing, an error message will appear
+        }
+
+        const user = await db('users').first('*').where({username: username}); //From the users table, we want to select the first row where the username equals to the username from the request body.
+
+        if(user) { // Here we check if the user exists in the database and check if the password is correct event though the password is hashed. The compare method helps us here to identify hashed password. We can do this because the input always gives the same output
+            const validPass = await bcrypt.compare(password, user.password); 
+            if(validPass) {
+                res.status(200).json('Valid username and password!');
+            } else {
+                res.status(400).json('You have entered wrong password!'); //If you have the wrong password
+            }
+        } else {
+            res.status(404).json('User don\t exist!'); //If the user dont exists
+        }
+
+    } catch(error) {
+        res.status(400).json('Something went wrong... Username or password is not matching!');
+    }
+});
+
+
+
+
+
+// Error handling
+app.use((err, req, res, next) => {console.error(err.stack);
+    res.status(502).send('CLOSE WEBPAGE!');
+});
+
+app.listen(PORT, () => console.log(`Have a lovely auction at our website ${PORT}`));
