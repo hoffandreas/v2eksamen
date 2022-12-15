@@ -28,6 +28,18 @@ const db = require('knex')({ //Knex is used to interact with the database
     useNullAsDefault: true,
 });
 
+app.get("/", (req, res ) => {
+    return res.sendFile("/signup.html", { root: path.join(__dirname, "../public") });
+})
+
+app.get("/signup.html", (req, res ) => {
+    return res.sendFile("/signup.html", { root: path.join(__dirname, "../public") });
+})
+
+app.get("/login.html", (req, res ) => {
+    return res.sendFile("/login.html", { root: path.join(__dirname, "../public") });
+})
+
 
 app.post('/signup', async (req, res) => {
     try {
@@ -41,10 +53,11 @@ app.post('/signup', async (req, res) => {
         The higher the generator number is the more times the password gets randomized so it becomes safer.The higher the number,the slower the funciton becomes*/
         await db('users').insert({username: username, password: hash}); //Inserting the hash and username to the 'users' dababase
     
-        res.status(200).json('Congratulations, you have registerd a username and password!')
-    } catch(error) {
+        return res.redirect('../public/login.html')
 
-        if(e.errno === 19) {
+    } catch(error) {
+        const name = await req.body.username
+        if(name.length > 0) {
             res.status(400).json('Error message, This username is already been taken!');
         } else {
             res.status(400).json('Something went wrong... Username or password is missing!');
@@ -65,7 +78,7 @@ app.post('/login', async (req, res) => {
         if(user) { // Here we check if the user exists in the database and check if the password is correct event though the password is hashed. The compare method helps us here to identify hashed password. We can do this because the input always gives the same output
             const validPass = await bcrypt.compare(password, user.password); 
             if(validPass) {
-                res.status(200).json('Valid username and password!');
+                res.redirect("/dashboard.html")
             } else {
                 res.status(400).json('You have entered wrong password!'); //If you have the wrong password
             }
