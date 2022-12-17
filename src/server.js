@@ -26,8 +26,9 @@ app.use(session({ //This session receives objects, with the options; secret, res
         secret: "Keep it secret, key that will sign cookie", // A key that will take in some string
         resave: false, // For every request to the server we want to create a new session
         saveUninitialized: false , // If we have not modified the session, we dont want it to save
-    })
-);
+        key: 'cookieName',
+        cookie: { secure: true, httpOnly: true, path: '/user', sameSite: true}
+    }));
 
 const isAuth = (req, res, next) => { //creating an authentication where you must have a user to access the dashboard
     if(req.session.isAuth){
