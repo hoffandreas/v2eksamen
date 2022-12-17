@@ -2,7 +2,6 @@ const express = require('express');
 const session = require("express-session");
 const app = express();
 const path = require('path');
-const bodyParser = require('body-parser')
 const bcrypt = require('bcryptjs'); //bcrypt hash is an async function, very slow alorithm
 
 const PORT = 3000 || process.env.port;
@@ -19,8 +18,8 @@ const db = require('knex')({ //Knex is used to interact with the database
 
 
 //middelware searching for every consecutive request
-app.use(bodyParser.urlencoded({ extended: false}));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true, limit: "1kb" }));
+app.use(express.json({ limit: "1kb" }));
 app.use(express.static(__dirname + '../public'))
 app.use(session({ //This session receives objects, with the options; secret, resave, saveUninitialized
         secret: "Keep it secret, key that will sign cookie", // A key that will take in some string

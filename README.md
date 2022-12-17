@@ -12,8 +12,6 @@ npm install sqlite3
 
 npm install bcryptjs
 
-npm install body-parser
-
 npm install socket.io
 
 npm install path
