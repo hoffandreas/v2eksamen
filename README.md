@@ -20,6 +20,8 @@ npm install knex
 
 npm install connect-session-knex
 
+npm install helmet
+
 
 --- If already installed --- 
 npm update
