@@ -106,7 +106,7 @@ app.post('/login', async (req, res) => {
 });
 
 
-app.post("/logout",(req, res) => {
+app.post("/logout",(req, res) => {//io.socket.post
     req.session.destroy((error) =>{
         if(error) throw error;
         res.redirect("/")
