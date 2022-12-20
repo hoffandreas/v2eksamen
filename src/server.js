@@ -2,10 +2,8 @@ const express = require('express');
 const session = require("express-session");
 const app = express();
 const path = require('path');
+const bodyParser = require('body-parser')
 const bcrypt = require('bcryptjs'); //bcrypt hash is an async function, very slow alorithm
-const helmet = require("helmet"); // Helmet helps you secure your Express apps by setting various HTTP headers.
-var cookieParser = require('cookie-parser')
-
 
 const PORT = 3000 || process.env.port;
 
@@ -21,16 +19,15 @@ const db = require('knex')({ //Knex is used to interact with the database
 
 
 //middelware searching for every consecutive request
-app.use(express.urlencoded({ extended: true, limit: "1kb" }));
-app.use(express.json({ limit: "1kb" })); 
+app.use(bodyParser.urlencoded({ extended: false}));
+app.use(bodyParser.json());
 app.use(express.static(__dirname + '../public'))
 app.use(session({ //This session receives objects, with the options; secret, resave, saveUninitialized
         secret: "Keep it secret, key that will sign cookie", // A key that will take in some string
         resave: false, // For every request to the server we want to create a new session
         saveUninitialized: false , // If we have not modified the session, we dont want it to save
-        key: 'cookieName',
-        cookie: { secure: true, httpOnly: true, path: '/user', sameSite: true}
-    }));
+    })
+);
 
 const isAuth = (req, res, next) => { //creating an authentication where you must have a user to access the dashboard
     if(req.session.isAuth){
@@ -106,7 +103,7 @@ app.post('/login', async (req, res) => {
 });
 
 
-app.post("/logout",(req, res) => {//io.socket.post
+app.post("/logout",(req, res) => {
     req.session.destroy((error) =>{
         if(error) throw error;
         res.redirect("/")
