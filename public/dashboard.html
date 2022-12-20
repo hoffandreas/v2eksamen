@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="WINE1.JPEG" type="image/x-icon">
     <title>TheHoffs live auction</title>
     <h1 id="overskrift2">
-        Welcome to The Hoffs Wineinvestors auction
+        Welcome to The Hoffs WineTalk
     </h1>
 </head>
 <body>
@@ -19,48 +19,13 @@
 
 <table>
   <tr>
-    <th>The auction ends in</th>
+    <th>The Talk ends in</th>
     <th id="countDown"></th>
   </tr>
 </table>
-
-
 <hr>
-  <p style="font-size: 200%;">
-    You are logged in as
-    <div id="userName"></div>
-
-        <table bgcolor="black" width="400" >
-          
-          <h2>Registered bids:</h2>
-<div id="bidContainer">
-          <tr bgcolor="grey" align="center">
-            <th>Username</th>
-            <th>Bid</th>
-          </tr>
-          <tr bgcolor=lightgrey align=center>
-          <td> user</td>
-          <td>money</td>
-        </tr>
-      </div>
-        </table>
 
 
-   <form action="javascript:void(0)" id="form"></form>
-    <img src="WINE1.JPEG" alt="WINE1" class="center" style="height: 350px; width: 250px; display: block; margin-left: auto; margin-right: auto" >
-
-    <div class="input-field">
-      <input type="money" name="money" id="money" placeholder="moneyamount" style="display: block; margin-left: auto; margin-right: auto;" >
-  </div>
-
-    <input type="submit" value="Submit bid" style="display: block; margin-left: auto; margin-right: auto;"></tr>
-  </form>
-
-  <form action="/logout" method="POST" >
-  <button>Logout</button>
-      </form>
-  
-    
   <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
   <script src="/socket.io/socket.io.js"></script>
 </body>
