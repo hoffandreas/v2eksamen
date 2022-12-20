@@ -110,4 +110,4 @@ app.use((error, req, res, next) => {console.error(error.stack); // Basic error h
     res.status(500).send('!ERROR! CLOSE WEBPAGE!');
 });
 
-app.listen(PORT, () => console.log(`Have a lovely talk at our website ${PORT}`));
+app.listen(PORT, () => console.log(`Have a lovely talk at our website http://localhost:${PORT}`));
