@@ -4,6 +4,7 @@ const app = express();
 const path = require('path');
 const bodyParser = require('body-parser')
 const bcrypt = require('bcryptjs'); //bcrypt hash is an async function, very slow alorithm
+const helmet = require('helmet')
 
 const PORT = 3000 || process.env.port;
 
@@ -19,6 +20,8 @@ const db = require('knex')({ //Knex is used to interact with the database
 
 
 //middelware searching for every consecutive request
+app.use(helmet.hsts());
+app.use(helmet.noSniff());
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '../public'))
