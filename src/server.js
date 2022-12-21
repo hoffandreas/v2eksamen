@@ -51,7 +51,8 @@ app.get("/login.html", (req, res ) => {
     return res.sendFile("/login.html", { root: path.join(__dirname, "../public") });
 })
 
-app.get("/dashboard.html", isAuth, (req, res ) => { //you need to be authenticated to access the dashboard
+app.get("/dashboard.html", isAuth, (req, res ) => {
+    
     return res.sendFile("/dashboard.html", { root: path.join(__dirname, "../public") });
 })
 
@@ -101,13 +102,17 @@ app.post('/login', async (req, res) => {
     }
 });
 
+
 app.post("/logout",(req, res) => {
     req.session.destroy((error) =>{
         if(error) throw error;
         res.redirect("/")
-    })})
+    })
+})
+
+
 app.use((error, req, res, next) => {console.error(error.stack); // Basic error handling
     res.status(500).send('!ERROR! CLOSE WEBPAGE!');
 });
 
-app.listen(PORT, () => console.log(`Have a lovely talk at our website http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Have a lovely auction at our website ${PORT}`));

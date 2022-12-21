@@ -1,4 +1,4 @@
-$(document).ready(function(){
+/*$(document).ready(function(){
     var socket = io.connect('http://localhost:3001');
   
     var username = prompt("What is your name?");
@@ -31,4 +31,4 @@ $(document).ready(function(){
     socket.on("removeChatter", function(name){
       $("#chatters li[data-name=" + name +"]").remove()
     })
-  })
+  })*/
