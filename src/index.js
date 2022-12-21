@@ -27,15 +27,5 @@ io.on('connection', function(socket){
     io.sockets.emit("messages", {username, message});
   });
 
-  socket.on('disconnect', function(name){
-    io.sockets.emit("removeChatter", socket.username);
-  });
 });
-
-app.get('/', function(req, res){
-  res.sendFile(__dirname + '/dashboard.html');
-});
-
-server.listen(3001, function(){
-  console.log('Server started on port 3000')
-});*/
+*/

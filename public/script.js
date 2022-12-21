@@ -1,7 +1,7 @@
-/*$(document).ready(function(){
-    var socket = io.connect('http://localhost:3001');
-  
-    var username = prompt("What is your name?");
+$(document).ready(function(){
+    var socket = io.connect('http://localhost:3000/dashboard.html');
+
+    let username = prompt("alias")
     socket.emit('join', username);
   
     $("#chatForm").on('submit', function(e){
@@ -28,7 +28,5 @@
       $("#chatters").append($chatter)
     })
   
-    socket.on("removeChatter", function(name){
-      $("#chatters li[data-name=" + name +"]").remove()
-    })
-  })*/
+  
+  })

@@ -5,8 +5,16 @@ const path = require('path');
 const bodyParser = require('body-parser')
 const bcrypt = require('bcryptjs'); //bcrypt hash is an async function, very slow alorithm
 const helmet = require('helmet')
+var cookie = require('cookie-parser')
+var server = require("http").createServer(app);
+var io = require("socket.io")(server, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"]
+    }
+});
 
-const PORT = 3000 || process.env.port;
+
 
 // Database Connection
 const db = require('knex')({ //Knex is used to interact with the database
@@ -60,6 +68,18 @@ app.get("/dashboard.html", isAuth, (req, res ) => {
 })
 
 
+io.on('connection', function(socket){
+    socket.on('join', function(name){
+      
+      socket.username = name
+      io.sockets.emit("addChatter", name);
+    });
+  
+    socket.on('messages', function(message){
+      username = socket.username
+      io.sockets.emit("messages", {username, message});
+    });
+});
 
 
 app.post('/signup', async (req, res) => {
@@ -118,4 +138,4 @@ app.use((error, req, res, next) => {console.error(error.stack); // Basic error h
     res.status(500).send('!ERROR! CLOSE WEBPAGE!');
 });
 
-app.listen(PORT, () => console.log(`Have a lovely auction at our website ${PORT}`));
+server.listen(3000, () => console.log(`Have a lovely talk at our website 3000`));
