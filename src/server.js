@@ -4,17 +4,7 @@ const app = express();
 const path = require('path');
 const bodyParser = require('body-parser')
 const bcrypt = require('bcryptjs'); //bcrypt hash is an async function, very slow alorithm
-const helmet = require('helmet')
-var cookie = require('cookie-parser')
-var server = require("http").createServer(app);
-var io = require("socket.io")(server, {
-    cors: {
-      origin: "*",
-      methods: ["GET", "POST"]
-    }
-});
-
-
+const http = require("http").createServer(app);
 
 // Database Connection
 const db = require('knex')({ //Knex is used to interact with the database
@@ -25,11 +15,8 @@ const db = require('knex')({ //Knex is used to interact with the database
     useNullAsDefault: true,
 });
 
-
-
 //middelware searching for every consecutive request
-app.use(helmet.hsts());
-app.use(helmet.noSniff());
+
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '../public'))
@@ -40,6 +27,30 @@ app.use(session({ //This session receives objects, with the options; secret, res
     })
 );
 
+// socket IO ting
+var io = require("socket.io")(http, {
+    /* Handling CORS: https://socket.io/docs/v3/handling-cors/ for ngrok.io */
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"]
+    }
+});
+
+
+//Socket io
+io.on("connection", (socket) => {
+    console.log("a user connected");
+    socket.on("chat message", (msg) => {
+        console.log("message: " + msg);
+        io.emit("chat message", msg);
+    });
+    socket.on("disconnect", () => {
+        console.log("user disconnected");
+    });
+});
+
+
+
 const isAuth = (req, res, next) => { //creating an authentication where you must have a user to access the dashboard
     if(req.session.isAuth){
         next()
@@ -47,8 +58,6 @@ const isAuth = (req, res, next) => { //creating an authentication where you must
         res.redirect("../login.html")
     }
 }
-
-
 
 app.get("/", (req, res ) => {
     return res.sendFile("/signup.html", { root: path.join(__dirname, "../public") });
@@ -66,20 +75,6 @@ app.get("/dashboard.html", isAuth, (req, res ) => {
     
     return res.sendFile("/dashboard.html", { root: path.join(__dirname, "../public") });
 })
-
-
-io.on('connection', function(socket){
-    socket.on('join', function(name){
-      
-      socket.username = name
-      io.sockets.emit("addChatter", name);
-    });
-  
-    socket.on('messages', function(message){
-      username = socket.username
-      io.sockets.emit("messages", {username, message});
-    });
-});
 
 
 app.post('/signup', async (req, res) => {
@@ -138,4 +133,6 @@ app.use((error, req, res, next) => {console.error(error.stack); // Basic error h
     res.status(500).send('!ERROR! CLOSE WEBPAGE!');
 });
 
-server.listen(3000, () => console.log(`Have a lovely talk at our website 3000`));
+http.listen(3000, () => {
+    console.log("listening on *:3000");
+});
