@@ -4,7 +4,6 @@ const app = express();
 const path = require('path');
 const bodyParser = require('body-parser')
 const bcrypt = require('bcryptjs'); //bcrypt hash is an async function, very slow alorithm
-const http = require("http").createServer(app);
 
 // Database Connection
 const db = require('knex')({ //Knex is used to interact with the database
@@ -26,30 +25,6 @@ app.use(session({ //This session receives objects, with the options; secret, res
         saveUninitialized: false , // If we have not modified the session, we dont want it to save
     })
 );
-
-// socket IO ting
-var io = require("socket.io")(http, {
-    /* Handling CORS: https://socket.io/docs/v3/handling-cors/ for ngrok.io */
-    cors: {
-      origin: "*",
-      methods: ["GET", "POST"]
-    }
-});
-
-
-//Socket io
-io.on("connection", (socket) => {
-    console.log("a user connected");
-    socket.on("chat message", (msg) => {
-        console.log("message: " + msg);
-        io.emit("chat message", msg);
-    });
-    socket.on("disconnect", () => {
-        console.log("user disconnected");
-    });
-});
-
-
 
 const isAuth = (req, res, next) => { //creating an authentication where you must have a user to access the dashboard
     if(req.session.isAuth){
@@ -133,6 +108,6 @@ app.use((error, req, res, next) => {console.error(error.stack); // Basic error h
     res.status(500).send('!ERROR! CLOSE WEBPAGE!');
 });
 
-http.listen(3000, () => {
+app.listen(3000, () => {
     console.log("listening on *:3000");
 });
